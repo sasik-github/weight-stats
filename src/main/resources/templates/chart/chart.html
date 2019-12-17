@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section}, 'chart')}">
+<head>
+    <title>create stat</title>
+</head>
+<body>
+<section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.css" rel="stylesheet">
+
+    <div class="col-sm-12">
+        <div class="col-sm-12">
+
+            <div class="row">
+
+                <form>
+                    <div class="form-group">
+                        <label for="range">select range</label>
+                        <select class="form-control" id="range" name="range">
+                            <option th:each="range : ${ranges}" th:value="${range}" th:text="${range}"
+                                    th:selected="${range.name() == selectedRange}"></option>
+                        </select>
+                    </div>
+
+                    <button type="submit">filter</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+
+
+            <div class="row">
+                <canvas id="myChart" width="400" height="400"></canvas>
+            </div>
+            <script th:inline="javascript">
+                /*<![CDATA[*/
+                let stats = /*[[${statByMonths}]]*/ 'Sebastian';
+                console.log(stats);
+                /*]]>*/
+                var ctx = document.getElementById('myChart').getContext('2d');
+                let options = {
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                // beginAtZero: true
+                            }
+                        }]
+                    }
+                };
+                let data = {
+                    labels: Object.keys(stats),
+                    datasets: [{
+                        label: '# of Votes',
+                        data: Object.keys(stats).map(key => stats[key].average.toFixed(1)),
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.2)',
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235, 1)',
+                        ],
+                        borderWidth: 1
+                    }]
+                };
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: data,
+                    options: options
+                });
+            </script>
+        </div>
+    </div>
+
+</section>
+
+</body>
+</html>
