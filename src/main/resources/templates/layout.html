@@ -19,7 +19,8 @@
             <ul class="navbar-nav">
 
                 <li th:fragment="menuItem (path, active, title, text)" class="nav-item"
-                    th:classappend="${active == menu ? 'active' : ''}">
+                    th:classappend="${active == menu ? 'active' : ''}"
+                    th:if="!${param.logout}">
                     <a th:href="@{__${path}__}" th:title="${title}" class="nav-link">
                         <span th:text="${text}">Menu item</span>
                     </a>
@@ -30,6 +31,10 @@
                 </li>
             </ul>
         </div>
+
+        <form th:if="!${param.logout}" th:action="@{/logout}" method="post" class="form-inline my-2 my-lg-0">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign Out</button>
+        </form>
     </nav>
     <div th:replace="${content}">
         <p>Layout content</p>
