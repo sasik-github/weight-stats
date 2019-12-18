@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section}, 'registration')}">
+<head>
+    <title>Registration</title>
+</head>
+<body>
+<section>
+    <div class="col-sm-12">
+        <form th:action="@{/register}" th:object="${user}" method="post">
+            <input th:replace="~{fragments/inputField :: input ('Email', 'email', 'email')}"/>
+            <input th:replace="~{fragments/inputField :: input ('Password', 'password', 'password')}"/>
+            <input th:replace="~{fragments/inputField :: input ('First name', 'firstName', 'text')}"/>
+            <input th:replace="~{fragments/inputField :: input ('Last name', 'lastName', 'text')}"/>
+
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</section>
+</body>
+</html>

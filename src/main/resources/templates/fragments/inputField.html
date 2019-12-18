@@ -1,0 +1,20 @@
+<html>
+<body>
+
+<th:block th:fragment="input (label, name, type)">
+    <div th:with="isValid=${!#fields.hasErrors(name)}"
+         th:class="${'form-group' + (isValid ? '' : ' has-error')}" class="form-group">
+        <label th:for="${name}"
+               th:text="${label}">Label text</label>
+        <input th:type="${type}"
+               th:field="*{__${name}__}"
+               th:class="${'form-control' + (isValid ? '' : ' is-invalid')}" class="form-control"
+               th:id="${name}">
+
+        <div th:each="error: ${#fields.errors(name)}" class="invalid-feedback"
+             th:text="${error}">Validation error
+        </div>
+    </div>
+</th:block>
+</body>
+</html>
