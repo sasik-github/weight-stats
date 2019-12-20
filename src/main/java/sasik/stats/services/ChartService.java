@@ -2,6 +2,7 @@ package sasik.stats.services;
 
 import org.springframework.stereotype.Service;
 import sasik.stats.domain.StatItem;
+import sasik.stats.domain.User;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -21,44 +22,44 @@ public class ChartService
         this.statItemService = statItemService;
     }
 
-    public Map<LocalDate, DoubleSummaryStatistics> byMonth() {
-        final List<StatItem> stats = statItemService.findAll();
+    public Map<LocalDate, DoubleSummaryStatistics> byMonth(User user) {
+        final List<StatItem> stats = statItemService.findAllByUser(user);
 
         final Map<LocalDate, DoubleSummaryStatistics> collect = stats.stream()
-                .collect(
-                        Collectors.groupingBy((statItem) -> statItem.getDateTime().toLocalDate().with(TemporalAdjusters.firstDayOfMonth()), TreeMap::new, Collectors.summarizingDouble(StatItem::getValue))
-                );
+            .collect(
+                Collectors.groupingBy((statItem) -> statItem.getDateTime().toLocalDate().with(TemporalAdjusters.firstDayOfMonth()), TreeMap::new, Collectors.summarizingDouble(StatItem::getValue))
+            );
 
         return collect;
 
     }
 
-    public Map<LocalDate, DoubleSummaryStatistics> byWeek() {
+    public Map<LocalDate, DoubleSummaryStatistics> byWeek(User user) {
 
-        return statItemService.findAll()
-                .stream()
-                .collect(
-                        Collectors.groupingBy(
-                                (statItem -> statItem.getDateTime().toLocalDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))),
-                                TreeMap::new,
-                                Collectors.summarizingDouble(StatItem::getValue
-                                )
-                        )
-                );
+        return statItemService.findAllByUser(user)
+            .stream()
+            .collect(
+                Collectors.groupingBy(
+                    (statItem -> statItem.getDateTime().toLocalDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))),
+                    TreeMap::new,
+                    Collectors.summarizingDouble(StatItem::getValue
+                    )
+                )
+            );
     }
 
-    public Map<LocalDate, DoubleSummaryStatistics> byDay() {
+    public Map<LocalDate, DoubleSummaryStatistics> byDay(User user) {
 
-        return statItemService.findAll()
-                .stream()
-                .collect(
-                        Collectors.groupingBy(
-                                (statItem -> statItem.getDateTime().toLocalDate()),
-                                TreeMap::new,
-                                Collectors.summarizingDouble(StatItem::getValue
-                                )
-                        )
-                );
+        return statItemService.findAllByUser(user)
+            .stream()
+            .collect(
+                Collectors.groupingBy(
+                    (statItem -> statItem.getDateTime().toLocalDate()),
+                    TreeMap::new,
+                    Collectors.summarizingDouble(StatItem::getValue
+                    )
+                )
+            );
     }
 
 }

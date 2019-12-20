@@ -1,6 +1,7 @@
 package sasik.stats.vo;
 
 import lombok.Data;
+import sasik.stats.domain.User;
 import sasik.stats.services.ChartService;
 
 import java.lang.reflect.InvocationTargetException;
@@ -29,19 +30,19 @@ public class ChartRangeRequest
         WEEK,
         MONTH;
 
-        public Map<LocalDate, DoubleSummaryStatistics> filter(ChartService chartService) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        public Map<LocalDate, DoubleSummaryStatistics> filter(ChartService chartService, User user) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
             final String methodName = "by" + this.name().substring(0, 1).toUpperCase() + this.name().substring(1).toLowerCase();
-            final Method method = chartService.getClass().getMethod(methodName);
+            final Method method = chartService.getClass().getMethod(methodName, User.class);
 
-            return (Map<LocalDate, DoubleSummaryStatistics>) method.invoke(chartService);
+            return (Map<LocalDate, DoubleSummaryStatistics>) method.invoke(chartService, user);
 
         }
     }
 
-    public Map<LocalDate, DoubleSummaryStatistics> filter(ChartService chartService) {
+    public Map<LocalDate, DoubleSummaryStatistics> filter(ChartService chartService, User user) {
 
         try {
-            return Range.valueOf(this.getRange().toUpperCase()).filter(chartService);
+            return Range.valueOf(this.getRange().toUpperCase()).filter(chartService, user);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {

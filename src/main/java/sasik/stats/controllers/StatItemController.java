@@ -27,8 +27,9 @@ public class StatItemController
     }
 
     @GetMapping("/")
-    public String index(Model model, Pageable pageable) {
-        final Page<StatItem> all = statItemService.findAll(pageable);
+    public String index(Model model, Pageable pageable,
+                        @AuthenticationPrincipal UserPrincipal user) {
+        final Page<StatItem> all = statItemService.findAll(pageable, user.getUser());
         model.addAttribute("statsPage", all);
 
         return "stats/index";

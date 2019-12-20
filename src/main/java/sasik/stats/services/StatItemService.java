@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import sasik.stats.domain.Measurement;
 import sasik.stats.domain.StatItem;
+import sasik.stats.domain.User;
 import sasik.stats.repositories.StatItemRepository;
 import sasik.stats.vo.StatItemRequest;
 
@@ -23,15 +24,20 @@ public class StatItemService
         this.statItemRepository = statItemRepository;
     }
 
-    public Page<StatItem> findAll(Pageable pageable) {
+    public Page<StatItem> findAll(Pageable pageable, User user) {
         final Sort dateTimeSort = Sort.by("dateTime").descending();
         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), dateTimeSort);
 
-        return statItemRepository.findAll(pageable);
+        return statItemRepository.findAllByUser(user, pageable);
     }
 
     public List<StatItem> findAll() {
         return statItemRepository.findAll();
+    }
+
+    public List<StatItem> findAllByUser(User user) {
+
+        return statItemRepository.findAllByUser(user);
     }
 
     public StatItem create(StatItemRequest statItem) {
