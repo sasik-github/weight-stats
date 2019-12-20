@@ -43,6 +43,7 @@ public class StatItemService
         }
         newStatItem.setDateTime(time);
         newStatItem.setMeasurement(Measurement.WEIGHT);
+        newStatItem.setUser(statItem.getUser());
         statItemRepository.save(newStatItem);
 
         return newStatItem;

@@ -3,6 +3,7 @@ package sasik.stats.services;
 import org.springframework.stereotype.Service;
 import sasik.stats.domain.Measurement;
 import sasik.stats.domain.StatItem;
+import sasik.stats.domain.User;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -71,7 +72,8 @@ public class SamsungWeightConverter
             //format: 2018-04-18 16:07:38.518
             final String timeStr = values[indexes.get(Values.TIME.value)];
             final LocalDateTime dateTime = LocalDateTime.parse(timeStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.nnn"));
-            stats.add(new StatItem(null, dateTime, Double.valueOf(values[indexes.get(Values.WEIGHT.value)]), Measurement.WEIGHT));
+            stats.add(new StatItem(null, dateTime, Double.valueOf(values[indexes.get(Values.WEIGHT.value)]), Measurement.WEIGHT, new User()));
+            throw new UnsupportedOperationException("there is no valid User entity here");
         }
         return stats;
     }

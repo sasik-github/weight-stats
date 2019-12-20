@@ -12,3 +12,10 @@ spring:
   jpa:
     show-sql: true
     generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
+  flyway:
+
+    locations: classpath:db/migration
+    baseline-on-migrate: true

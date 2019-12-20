@@ -4,7 +4,6 @@ package sasik.stats.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -26,4 +25,8 @@ public class StatItem
     private Double value;
 
     private Measurement measurement;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private User user;
 }
