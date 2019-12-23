@@ -54,4 +54,8 @@ public class StatItemService
 
         return newStatItem;
     }
+
+    public void delete(Long id) {
+        statItemRepository.deleteById(id);
+    }
 }

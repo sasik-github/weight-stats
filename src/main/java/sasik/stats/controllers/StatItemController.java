@@ -5,10 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import sasik.stats.config.security.UserPrincipal;
 import sasik.stats.domain.StatItem;
 import sasik.stats.services.StatItemService;
@@ -49,6 +46,14 @@ public class StatItemController
     ) {
         statItem.setUser(authentication.getUser());
         statItemService.create(statItem);
+        return "redirect:/stats/";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(
+        @PathVariable("id") Long id
+    ) {
+        statItemService.delete(id);
         return "redirect:/stats/";
     }
 }

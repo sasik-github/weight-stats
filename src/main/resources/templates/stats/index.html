@@ -13,10 +13,17 @@
             <tr>
                 <th>data</th>
                 <th>weight</th>
+                <th>actions</th>
             </tr>
             <tr th:each="stat: ${statsPage}">
                 <td th:text="${#temporals.format(stat.dateTime)}"></td>
                 <td th:text="${stat.value}"></td>
+                <td>
+                    <form method="post" th:action="@{/stats/delete/{id}(id=${stat.id})}">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" class="btn btn-danger" value="Delete"/>
+                    </form>
+                </td>
             </tr>
         </table>
         <nav aria-label="Pagination" th:if="${statsPage.totalPages > 0}">
