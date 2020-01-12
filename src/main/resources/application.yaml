@@ -16,6 +16,8 @@ spring:
       ddl-auto: update
 
   flyway:
-
     locations: classpath:db/migration
     baseline-on-migrate: true
+    url: jdbc:postgresql://localhost:5432/postgres
+    user: postgres
+    password: pass
