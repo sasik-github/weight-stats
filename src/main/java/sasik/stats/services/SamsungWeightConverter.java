@@ -73,6 +73,7 @@ public class SamsungWeightConverter
             final String timeStr = values[indexes.get(Values.TIME.value)];
             final LocalDateTime dateTime = LocalDateTime.parse(timeStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.nnn"));
             stats.add(new StatItem(null, dateTime, Double.valueOf(values[indexes.get(Values.WEIGHT.value)]), Measurement.WEIGHT, new User()));
+            //@todo I added User relation, need to get default user for converter
             throw new UnsupportedOperationException("there is no valid User entity here");
         }
         return stats;

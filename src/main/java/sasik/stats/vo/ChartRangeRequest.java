@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.DoubleSummaryStatistics;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 @Data
 public class ChartRangeRequest
@@ -26,11 +27,22 @@ public class ChartRangeRequest
 
     public enum Range
     {
-        DAY,
-        WEEK,
-        MONTH;
+        DAY((ChartService::byDay)),
+        WEEK((ChartService::byWeek)),
+        MONTH((ChartService::byMonth));
 
-        public Map<LocalDate, DoubleSummaryStatistics> filter(ChartService chartService, User user) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        private final BiFunction<ChartService, User, Map<LocalDate, DoubleSummaryStatistics>> filterFunction;
+
+        Range(BiFunction<ChartService, User, Map<LocalDate, DoubleSummaryStatistics>> filterFunction) {
+            this.filterFunction = filterFunction;
+        }
+
+        public Map<LocalDate, DoubleSummaryStatistics> filter(ChartService chartService, User user) {
+            return filterFunction.apply(chartService, user);
+        }
+
+        @Deprecated
+        public Map<LocalDate, DoubleSummaryStatistics> filterByReflection(ChartService chartService, User user) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
             final String methodName = "by" + this.name().substring(0, 1).toUpperCase() + this.name().substring(1).toLowerCase();
             final Method method = chartService.getClass().getMethod(methodName, User.class);
 
@@ -41,17 +53,8 @@ public class ChartRangeRequest
 
     public Map<LocalDate, DoubleSummaryStatistics> filter(ChartService chartService, User user) {
 
-        try {
-            return Range.valueOf(this.getRange().toUpperCase()).filter(chartService, user);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        return Range.valueOf(this.getRange().toUpperCase()).filter(chartService, user);
 
-        return null;
     }
 
 
