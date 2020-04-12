@@ -1,0 +1,10 @@
+version: '3'
+services:
+  stats-db:
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_PASSWORD: pass
+    volumes:
+      - ./postgresql/data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432

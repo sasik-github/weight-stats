@@ -1,6 +1,8 @@
 logging:
   level:
     org.springframework.security: DEBUG
+    org.hibernate.sql: DEBUG
+    org.hibernate.type: TRACE
 
 spring:
   datasource:

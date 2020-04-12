@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface StatItemRepository extends JpaRepository<StatItem, Long>
 {
-    public List<StatItem> findAllByUser(User user);
-    public Page<StatItem> findAllByUser(User user, Pageable pageable);
+    List<StatItem> findAllByUser(User user);
+    Page<StatItem> findAllByUser(User user, Pageable pageable);
 
 }

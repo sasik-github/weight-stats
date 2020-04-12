@@ -14,8 +14,8 @@
 
             <div class="row">
 
-                <form>
-                    <div class="form-group">
+                <form class="form-inline">
+                    <div class="form-group mb-2">
                         <label for="range">select range</label>
                         <select class="form-control" id="range" name="range">
                             <option th:each="range : ${ranges}" th:value="${range}" th:text="${range}"
@@ -23,19 +23,20 @@
                         </select>
                     </div>
 
-                    <button type="submit">filter</button>
+                    <button type="submit" class="btn btn-primary mx-sm-3 mb-2">Filter</button>
                 </form>
             </div>
         </div>
 
         <div class="col-sm-12">
 
-
             <div class="row">
-                <canvas id="myChart" width="400" height="400"></canvas>
+                <div class="chart-container" style="position: relative; height:80vh; width:80vw">
+                    <canvas id="myChart"></canvas>
+                </div>
             </div>
+
             <script th:inline="javascript">
-                /*<![CDATA[*/
                 let stats = /*[[${statByMonths}]]*/ 'Sebastian';
                 console.log(stats);
                 /*]]>*/
@@ -53,7 +54,7 @@
                 let data = {
                     labels: Object.keys(stats),
                     datasets: [{
-                        label: '# of Votes',
+                        label: '# Kg',
                         data: Object.keys(stats).map(key => stats[key].average.toFixed(1)),
                         backgroundColor: [
                             'rgba(54, 162, 235, 0.2)',

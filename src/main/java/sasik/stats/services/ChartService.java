@@ -25,13 +25,14 @@ public class ChartService
     public Map<LocalDate, DoubleSummaryStatistics> byMonth(User user) {
         final List<StatItem> stats = statItemService.findAllByUser(user);
 
-        final Map<LocalDate, DoubleSummaryStatistics> collect = stats.stream()
+        return stats.stream()
             .collect(
-                Collectors.groupingBy((statItem) -> statItem.getDateTime().toLocalDate().with(TemporalAdjusters.firstDayOfMonth()), TreeMap::new, Collectors.summarizingDouble(StatItem::getValue))
+                Collectors.groupingBy(
+                    statItem -> statItem.getDateTime().toLocalDate().with(TemporalAdjusters.firstDayOfMonth()),
+                    TreeMap::new,
+                    Collectors.summarizingDouble(StatItem::getValue)
+                )
             );
-
-        return collect;
-
     }
 
     public Map<LocalDate, DoubleSummaryStatistics> byWeek(User user) {
@@ -40,10 +41,9 @@ public class ChartService
             .stream()
             .collect(
                 Collectors.groupingBy(
-                    (statItem -> statItem.getDateTime().toLocalDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))),
+                    statItem -> statItem.getDateTime().toLocalDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)),
                     TreeMap::new,
-                    Collectors.summarizingDouble(StatItem::getValue
-                    )
+                    Collectors.summarizingDouble(StatItem::getValue)
                 )
             );
     }
@@ -54,10 +54,9 @@ public class ChartService
             .stream()
             .collect(
                 Collectors.groupingBy(
-                    (statItem -> statItem.getDateTime().toLocalDate()),
+                    statItem -> statItem.getDateTime().toLocalDate(),
                     TreeMap::new,
-                    Collectors.summarizingDouble(StatItem::getValue
-                    )
+                    Collectors.summarizingDouble(StatItem::getValue)
                 )
             );
     }
